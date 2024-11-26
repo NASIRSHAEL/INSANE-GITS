@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Number Rain</title>
+    <style>
+        body {
+            margin: 0;
+            background: black;
+            color: #00ff00;
+            overflow: hidden;
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="binaryRain"></canvas>
+    <script>
+        const canvas = document.getElementById('binaryRain');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size to fill the window
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const fontSize = 16;
+        const columns = Math.floor(canvas.width / fontSize);
+
+        // Array to store the y-coordinate of rain for each column
+        const drops = Array(columns).fill(0);
+
+        function draw() {
+            // Set semi-transparent black background for fade effect
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Set text style
+            ctx.fillStyle = '#00ff00'; // Green color
+            ctx.font = `${fontSize}px monospace`;
+
+            // Loop through columns
+            for (let i = 0; i < drops.length; i++) {
+                const text = Math.random() > 0.5 ? '0' : '1'; // Random binary digit
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                // Draw the binary digit
+                ctx.fillText(text, x, y);
+
+                // Randomly reset the y-coordinate for rain effect
+                if (y > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                // Increment the y-coordinate for the next frame
+                drops[i]++;
+            }
+        }
+
+        // Redraw the rain continuously
+        setInterval(draw, 50);
+
+        // Adjust canvas size when the window is resized
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drops.length = Math.floor(canvas.width / fontSize);
+            drops.fill(0);
+        });
+    </script>
+</body>
+</html>
