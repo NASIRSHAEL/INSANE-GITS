@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesmerizing Star Trails View</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const stars = [];
+        const starCount = 1000;
+
+        for (let i = 0; i < starCount; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5,
+                color: `rgba(255, 255, 255, ${Math.random()})`,
+                speed: Math.random() * 0.5 + 0.5
+            });
+        }
+
+        function drawStars() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                context.beginPath();
+                context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                context.fillStyle = star.color;
+                context.fill();
+                star.x -= star.speed;
+                star.y += star.speed / 2;
+                if (star.x < 0) {
+                    star.x = canvas.width;
+                }
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                }
+            });
+            requestAnimationFrame(drawStars);
+        }
+
+        drawStars();
+    </script>
+</body>
+</html>
